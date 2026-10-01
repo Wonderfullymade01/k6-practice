@@ -1,0 +1,9 @@
+[
+  { "name": "Amaka",  "vegetarian": true,  "maxCalories": 500,  "excluded": ["Mushrooms"], "maxToppings": 4 },
+  { "name": "Tunde",  "vegetarian": false, "maxCalories": 1000, "excluded": [],            "maxToppings": 6 },
+  { "name": "Chloe",  "vegetarian": true,  "maxCalories": 700,  "excluded": ["Olives"],    "maxToppings": 3 },
+  { "name": "Ibrahim","vegetarian": false, "maxCalories": 800,  "excluded": ["Bacon"],     "maxToppings": 5 },
+  { "name": "Sofia",  "vegetarian": false, "maxCalories": 600,  "excluded": ["Anchovies"], "maxToppings": 4 },
+  { "name": "Kemi",   "vegetarian": true,  "maxCalories": 900,  "excluded": [],            "maxToppings": 5 },
+  { "name": "Fiyin",  "vegetarian": true,  "maxCalories": 650,  "excluded": ["Apples"],    "maxToppings": 2 } 
+]

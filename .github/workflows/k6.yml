@@ -1,0 +1,54 @@
+# =====================================================================
+# LESSON 14: GITHUB ACTIONS WORKFLOW
+# =====================================================================
+# This file tells GitHub: "every time someone pushes code, start a
+# fresh computer in the cloud, install k6, and run our smoke test."
+#
+# It's written in YAML, a format for settings files.
+# YAML rules:
+#   - INDENTATION (spaces at the start of a line) matters a lot.
+#     Always use SPACES, never tabs.
+#   - "name: value" pairs, like in JavaScript objects.
+#   - A "-" at the start of a line means "an item in a list".
+#   - "#" starts a comment, like "//" in JavaScript.
+#
+# GitHub only finds workflow files inside the folder .github/workflows/
+# =====================================================================
+
+# The name shown on GitHub's "Actions" tab.
+name: k6 performance tests
+
+# WHEN should this run?
+on:
+  push:
+    branches: [main]      # every time code is pushed to the main branch
+  pull_request:           # every time someone opens or updates a pull request
+  workflow_dispatch:      # adds a "Run workflow" button on GitHub, to run it by hand
+
+# WHAT should it do? A workflow is made of one or more "jobs".
+jobs:
+  smoke-test:
+    # Rent a fresh Linux computer from GitHub for this job.
+    # It's brand new every time, and deleted afterwards.
+    runs-on: ubuntu-latest
+
+    # The steps run in order, top to bottom.
+    steps:
+      # Step 1: copy our repository's files onto the cloud computer.
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      # Step 2: install k6 on it (like you did on your own computer).
+      # "uses" means: use a ready-made action that someone else wrote.
+      - name: Install k6
+        uses: grafana/setup-k6-action@v1
+
+      # Step 3: run the test. This is the same command you type yourself.
+      # If a threshold fails, k6 exits with code 99, this step fails,
+      # and the whole run gets a red X.
+      - name: Run k6 smoke test
+        run: k6 run ci-smoke-test.js
+        env:
+          # Secrets come from GitHub's settings, never from the code.
+          # (Not used by the smoke test yet: this is for the challenge.)
+          QP_PASSWORD: ${{ secrets.QP_PASSWORD }}

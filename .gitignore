@@ -1,0 +1,10 @@
+# Files Git should NEVER upload to GitHub.
+
+# Secrets and local settings
+.env
+*.env
+
+# k6 result files (can be big, and are made fresh on every run)
+*.json.gz
+summary*.json
+results/
