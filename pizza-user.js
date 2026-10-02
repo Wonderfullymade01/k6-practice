@@ -24,7 +24,7 @@ const BASE_URL = 'https://quickpizza.grafana.com';
 // These thresholds are shared too, so every test type is judged by the
 // SAME rules. That makes it fair to compare the results.
 export const thresholds = {
-  http_req_duration: ['p(95)<1500'], // 95% of requests under 1.5 seconds
+  http_req_duration: ['p(95)<50'], // 95% of requests under 1.5 seconds
   http_req_failed: ['rate<0.01'],    // fewer than 1% errors
 };
 
