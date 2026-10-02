@@ -37,7 +37,7 @@ jobs:
       # Step 1: copy our repository's files onto the cloud computer.
       - name: Check out the code
         uses: actions/checkout@v5
-
+    
       # Step 2: install k6 on it (like you did on your own computer).
       # "uses" means: use a ready-made action that someone else wrote.
       - name: Install k6
