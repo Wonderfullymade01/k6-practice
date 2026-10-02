@@ -1,0 +1,11 @@
+# Tell Grafana where to find its numbers: in Prometheus.
+# "prometheus" is the container's name from docker-compose.yml.
+# Containers in the same compose file can find each other by name.
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true

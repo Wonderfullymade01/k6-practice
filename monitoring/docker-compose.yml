@@ -1,0 +1,57 @@
+# =====================================================================
+# LESSON 15: PROMETHEUS + GRAFANA, RUNNING IN DOCKER
+# =====================================================================
+# Start:   docker compose up -d      (run inside the monitoring folder)
+# Stop:    docker compose down
+#
+# DOCKER runs programs in "containers": small, sealed boxes that have
+# everything the program needs. You don't install Prometheus or Grafana
+# on your computer. Docker downloads them and runs them in their boxes.
+#
+# This file (docker compose) starts TWO containers that work together:
+#
+#   k6 ──sends numbers──▶ PROMETHEUS ──is read by──▶ GRAFANA ──▶ your browser
+#                         (the storage)              (the dashboard)
+#
+# Like a car: Prometheus is the black box recorder, saving every
+# measurement with the time it happened. Grafana is the dashboard with
+# the dials and graphs.
+# =====================================================================
+
+services:
+
+  # -------------------------------------------------------------------
+  # PROMETHEUS: a "time-series database". It stores numbers over time:
+  # "at 10:00:01 there were 5 users, at 10:00:02 there were 6..."
+  # -------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v3.5.0     # which program and version to download
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      # Allow k6 to PUSH its numbers into Prometheus ("remote write").
+      - --web.enable-remote-write-receiver
+    ports:
+      - "9090:9090"                   # open it at http://localhost:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # -------------------------------------------------------------------
+  # GRAFANA: draws graphs and dashboards from the numbers in Prometheus.
+  # -------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:12.1.0
+    ports:
+      - "3000:3000"                   # open it at http://localhost:3000
+    environment:
+      # Skip the login page. FINE ON YOUR OWN COMPUTER for learning.
+      # NEVER do this on a real server: anyone could change your dashboards.
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      # "Provisioning" = setting Grafana up automatically from files,
+      # so you don't have to click through menus every time.
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus                    # start Prometheus first

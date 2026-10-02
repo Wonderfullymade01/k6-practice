@@ -1,0 +1,6 @@
+# Prometheus settings.
+# Usually Prometheus goes and COLLECTS numbers from apps ("scraping").
+# For k6 we don't need that: k6 PUSHES its numbers straight in.
+# So this file only needs the basics.
+global:
+  scrape_interval: 15s
