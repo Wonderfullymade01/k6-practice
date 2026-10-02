@@ -1,0 +1,8 @@
+# Load every dashboard file from the dashboards folder automatically.
+apiVersion: 1
+providers:
+  - name: k6
+    folder: k6
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

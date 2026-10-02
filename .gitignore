@@ -8,3 +8,4 @@
 *.json.gz
 summary*.json
 results/
+*-report.html
